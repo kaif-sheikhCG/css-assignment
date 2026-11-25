@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Clone</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      color: #f1f1f1;
+      font-family: Roboto, Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ----- Header ----- */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 0 16px;
+      background: #0f0f0f;
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-box {
+      width: 30px;
+      height: 21px;
+      background: #ff0000;
+      border-radius: 6px;
+    }
+
+    .search {
+      display: flex;
+      flex: 1;
+      max-width: 540px;
+      margin: 0 40px;
+    }
+
+    .search input {
+      flex: 1;
+      height: 40px;
+      padding: 0 14px;
+      background: #121212;
+      border: 1px solid #303030;
+      border-right: none;
+      border-radius: 40px 0 0 40px;
+      color: #f1f1f1;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .search button {
+      width: 64px;
+      height: 40px;
+      background: #222;
+      border: 1px solid #303030;
+      border-radius: 0 40px 40px 0;
+      color: #f1f1f1;
+      cursor: pointer;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #f1f1f1;
+      stroke-width: 2;
+      cursor: pointer;
+    }
+    form{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #3a3a3a;
+    }
+
+    /* ----- Body: sidebar + content ----- */
+    .main {
+      display: flex;
+    }
+
+    /* ----- Sidebar ----- */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-group {
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+      border-bottom: 1px solid #303030;
+    }
+
+    .sidebar-group:last-child {
+      border-bottom: none;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: #272727;
+    }
+
+    .nav-link.active {
+      font-weight: bold;
+    }
+
+    .sidebar-title {
+      padding: 12px 12px 6px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .sub-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .sub-link:hover {
+      background: #272727;
+    }
+
+    .sub-pic {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #3a3a3a;
+      flex-shrink: 0;
+    }
+
+    .sub-name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3ea6ff;
+    }
+
+    /* ----- Content ----- */
+    .content {
+
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chips {
+      display: flex;
+      gap: 12px;
+      padding: 12px 16px;
+      overflow-x: auto;
+    }
+
+    .chip {
+      flex-shrink: 0;
+      padding: 6px 12px;
+      background: #272727;
+      border: none;
+      border-radius: 8px;
+      color: #f1f1f1;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: #f1f1f1;
+      color: #0f0f0f;
+    }
+
+    .videos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px 16px;
+      padding: 16px;
+    }
+
+    .video {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 262px;
+    }
+
+    .thumbnail {
+      width: 262px;
+      height: 148px;
+      background: #272727;
+      border-radius: 12px;
+    }
+
+    .video-info {
+      display: flex;
+      gap: 12px;
+    }
+
+    .channel-pic {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #3a3a3a;
+      flex-shrink: 0;
+    }
+
+    .video-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 14px;
+    }
+
+    .video-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .muted {
+      color: #aaaaaa;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+      .header-right{
+        display: none;
+      }
+    }
+    @media (max-width: 568px){
+      .video{
+        width: 100vw;
+        height: 38vh;
+      }
+      .thumbnail{
+        width: 100vw;
+        height: 38vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <div class="logo">
+        <span class="logo-box"></span>
+        <span>YouTube</span>
+      </div>
+    </div>
+
+    <form class="search">
+      <input type="text" placeholder="Search">
+      <button type="button">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      </button>
+      <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>
+    </form>
+
+    <div class="header-right">
+      
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="5"/><rect x="10" y="3" width="4" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="10" width="5" height="4"/><rect x="10" y="10" width="4" height="4"/><rect x="16" y="10" width="5" height="4"/><rect x="3" y="16" width="5" height="5"/><rect x="10" y="16" width="4" height="5"/><rect x="16" y="16" width="5" height="5"/></svg>
+      <svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <div class="main">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-group">
+        <a href="#" class="nav-link active">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>
+          <span>Home</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
+          <span>Explores</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="4"/><path d="M10 9.5v5l4-2.5z"/></svg>
+          <span>Shorts</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 3h10M5 21h14"/></svg>
+          <span>Subscriptions</span>
+        </a>
+      </div>
+
+      <div class="sidebar-group">
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9.5v5l4-2.5z"/></svg>
+          <span>Library</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg>
+          <span>History</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9.5v5l4-2.5z"/></svg>
+          <span>Your videos</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5h3"/></svg>
+          <span>Watch later</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M7 10v11H3V10h4zm2 11h8.5a2 2 0 0 0 2-1.7l1.3-7A2 2 0 0 0 18.8 10H14V5.5A2.5 2.5 0 0 0 11.5 3L9 9v12z"/></svg>
+          <span>Liked videos</span>
+        </a>
+        <a href="#" class="nav-link">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          <span>Show more</span>
+        </a>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-title">Subscriptions</div>
+        <a href="#" class="sub-link"><span class="sub-pic"></span><span class="sub-name">Nadir On The Go</span><span class="live-dot"></span></a>
+        <a href="#" class="sub-link"><span class="sub-pic"></span><span class="sub-name">Coke Studio Bangla</span><span class="live-dot"></span></a>
+        <a href="#" class="sub-link"><span class="sub-pic"></span><span class="sub-name">MKBHD</span></a>
+        <a href="#" class="sub-link"><span class="sub-pic"></span><span class="sub-name">Figma</span><span class="live-dot"></span></a>
+        <a href="#" class="sub-link"><span class="sub-pic"></span><span class="sub-name">ATC Android ToTo Company</span></a>
+        <a href="#" class="sub-link"><span class="sub-pic"></span><span class="sub-name">Alux.com</span><span class="live-dot"></span></a>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <div class="chips">
+        <button class="chip active">All</button>
+        <button class="chip">Cook Studio</button>
+        <button class="chip">UX</button>
+        <button class="chip">Case Study</button>
+        <button class="chip">Music</button>
+        <button class="chip">Bnagla Lofi</button>
+        <button class="chip">Tour</button>
+        <button class="chip">Saintmartin</button>
+        <button class="chip">Tech</button>
+        <button class="chip">iPhone 13</button>
+        <button class="chip">User Interface Design</button>
+        <button class="chip">Computer</button>
+      </div>
+
+      <section class="videos">
+
+        <div class="video">
+          <div class="thumbnail" ; style="background-image: url(Thumbnail-8.png); background-size: cover;"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">Bulbuli | Coke Studio Bangla | Season One | Ritu Raj X Nandita</span>
+              <span class="muted">Coke Studio Bangla</span>
+              <span class="muted">1.5M views • 2 days ago</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumbnail" style="background-image: url();"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">Infinix Note 12: AMOLED Helio G88 SoC!</span>
+              <span class="muted">ATC Android ToTo Company</span>
+              <span class="muted">4.2M views • 2 days ago</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumbnail"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">My first UX Design case study - This got me my first job.</span>
+              <span class="muted">Saptarshi Prakash</span>
+              <span class="muted">4.8K views • 1 year ago</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumbnail"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">My Mix</span>
+              <span class="muted">Lopamudra Mitra, Anupam Roy, and more</span>
+              <span class="muted">Playlist</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumbnail"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">UX Design - What is it? (From AJ &amp; Smart)</span>
+              <span class="muted">AJ&amp;Smart</span>
+              <span class="muted">150K views • 3 years ago</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumbnail"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">Mix - Mombati | Mohon Sharif | Dhakaiya Dose</span>
+              <span class="muted">Mohon Sharif, Odd Signature, Shayan Chowdhury Arnob</span>
+              <span class="muted">Playlist</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumbnail"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">48 VISA-FREE countries for Bangladeshi passport holders</span>
+              <span class="muted">Nadir On The Go</span>
+              <span class="muted">1.7M views • 1 year ago</span>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="video">
+          <div class="thumbnail"></div>
+          <div class="video-info">
+            <div class="channel-pic"></div>
+            <div class="video-text">
+              <span class="video-title">14 Advanced Tips to Design FASTER in Figma</span>
+              <span class="muted">Mizko</span>
+              <span class="muted">53K views • 1 year ago</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
